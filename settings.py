@@ -22,8 +22,14 @@ TITLE = "Runner" #Sets title
 FONT_NAME = 'arial'
 
 # screen size
-WIDTH = 480 #sets width of screen
-HEIGHT = 600 #sets height of screen
+WIDTH = 1024 # 16 * 64 or 32 * 32 or 64 * 16
+HEIGHT = 768 # 16 * 48 or 32 * 24 or 64 * 12
+
+
+#tile properties
+TILESIZE = 32
+GRIDWIDTH = WIDTH / TILESIZE
+GRIDHEIGHT = HEIGHT / TILESIZE
 
 # Player Size
 PLAYER_HEIGHT = 32
@@ -47,6 +53,8 @@ diff = "Normal" #sets difficulty
 
 # Colors (R,G,B)
 BLACK = (0, 0, 0)
+GRAY = (50,50,50)
+LIGHTGRAY = (100,100,100)
 WHITE = (255, 255, 255)
 RED = (255, 0, 0)
 GREEN = (0, 255 ,0)
