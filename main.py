@@ -17,7 +17,7 @@ class Game:
         self.running = True
 
     def load_data(self):
-        self.map = Map(path.join(game_Folder, 'map.txt'))
+        self.map = Map(path.join(game_Folder, 'map2.txt'))
 
     def new(self):
         self.load_data()
@@ -29,6 +29,7 @@ class Game:
                     Wall(self, col, row)
                 if tile == "P":
                     self.player = Player(self, col, row)
+        self.camera = Camera(self.map.width, self.map.height)
         self.run()
 
     def run(self):
@@ -42,6 +43,7 @@ class Game:
     def update(self):
         #Update loops
         self.all_sprites.update()
+        self.camera.update(self.player)
 
     def events(self):
         for event in pg.event.get():
@@ -61,7 +63,8 @@ class Game:
         #Draw sprites
         self.screen.fill(GRAY)
         self.draw_grid()
-        self.all_sprites.draw(self.screen)
+        for sprite in self.all_sprites:
+            self.screen.blit(sprite.image, self.camera.apply(sprite))
 
         #after drawing, flip display
         pg.display.flip()
