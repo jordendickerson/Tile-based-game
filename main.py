@@ -1,5 +1,6 @@
 from settings import *
 from sprites import *
+from tilemap import *
 import pygame as pg
 from os import path
 
@@ -16,16 +17,13 @@ class Game:
         self.running = True
 
     def load_data(self):
-        self.map_data = []
-        with open(path.join(game_Folder, 'map.txt'), 'rt') as f:
-            for line in f:
-                self.map_data.append(line)
+        self.map = Map(path.join(game_Folder, 'map.txt'))
 
     def new(self):
         self.load_data()
         self.all_sprites = pg.sprite.Group()
         self.walls = pg.sprite.Group()
-        for row, tiles in enumerate(self.map_data):
+        for row, tiles in enumerate(self.map.data):
             for col, tile in enumerate(tiles):
                 if tile == '1':
                     Wall(self, col, row)
