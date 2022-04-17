@@ -1,3 +1,5 @@
+#Artwork by Kenney
+
 from settings import *
 from sprites import *
 from tilemap import *
@@ -18,6 +20,7 @@ class Game:
 
     def load_data(self):
         self.map = Map(path.join(game_Folder, 'map2.txt'))
+        self.player_img = pg.image.load(path.join(img_Folder, PLAYER_IMG)).convert()
 
     def new(self):
         self.load_data()
