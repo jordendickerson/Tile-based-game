@@ -12,7 +12,7 @@ class Game:
         self.screen = pg.display.set_mode((WIDTH, HEIGHT))
         pg.display.set_caption(TITLE)
         self.clock = pg.time.Clock()
-        pg.key.set_repeat(100, 100)
+        pg.key.set_repeat(500, 100)
         self.running = True
 
     def load_data(self):
@@ -36,7 +36,7 @@ class Game:
     def run(self):
         self.playing = True
         while self.playing:
-            self.clock.tick(FPS)
+            self.dt = self.clock.tick(FPS) / 1000
             self.events()
             self.update()
             self.draw()
@@ -52,14 +52,7 @@ class Game:
                     self.playing = False
                 self.running = False
             if event.type == pg.KEYDOWN:
-                if event.key == pg.K_LEFT:
-                    self.player.move(dx=-1, dy=0)
-                if event.key == pg.K_RIGHT:
-                    self.player.move(dx=1,dy=0)
-                if event.key == pg.K_UP:
-                    self.player.move(dx=0,dy=-1)
-                if event.key == pg.K_DOWN:
-                    self.player.move(dx=0,dy=1)
+                pass
     def draw_grid(self):
         for x in range(0,WIDTH,TILESIZE):
             pg.draw.line(self.screen, LIGHTGRAY, (x, 0), (x, HEIGHT))
