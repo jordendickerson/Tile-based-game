@@ -45,7 +45,9 @@ PLAYER_ROT_SPEED = 250
 PLAYER_IMG = 'manBlue_gun.png'
 PLAYER_HIT_RECT = pg.Rect(0,0,35,35)
 
-# Game Properties
+# Mob Properties
+MOB_SPEED = 150
+MOB_HIT_RECT = pg.Rect(0,0,30,30)
 
 
 # clock speed
