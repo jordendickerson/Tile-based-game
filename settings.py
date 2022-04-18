@@ -32,6 +32,9 @@ TILESIZE = 64
 GRIDWIDTH = WIDTH / TILESIZE
 GRIDHEIGHT = HEIGHT / TILESIZE
 
+WALL_IMG = "tile_12.png"
+MOB_IMG = "zoimbie1_hold.png"
+
 # Player Size
 PLAYER_HEIGHT = 32
 PLAYER_WIDTH = 32
@@ -64,3 +67,4 @@ YELLOW = (255, 255, 0)
 skyBlue = (135,206,235)
 darkBlue = (86, 105, 184)
 cfBlue = (100, 149, 237)
+BROWN = (106, 55, 5)
