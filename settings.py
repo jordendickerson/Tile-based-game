@@ -1,6 +1,7 @@
 # Game Settings
 import random
 import os
+import pygame as pg
 
 #set directories
 game_Folder = os.path.dirname(__file__)
@@ -37,7 +38,9 @@ PLAYER_WIDTH = 32
 
 #player properties
 PLAYER_SPEED = 300
+PLAYER_ROT_SPEED = 250
 PLAYER_IMG = 'manBlue_gun.png'
+PLAYER_HIT_RECT = pg.Rect(0,0,35,35)
 
 # Game Properties
 

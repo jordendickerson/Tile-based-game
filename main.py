@@ -32,6 +32,7 @@ class Game:
                     Wall(self, col, row)
                 if tile == "P":
                     self.player = Player(self, col, row)
+
         self.camera = Camera(self.map.width, self.map.height)
         self.run()
 
@@ -68,7 +69,7 @@ class Game:
         self.draw_grid()
         for sprite in self.all_sprites:
             self.screen.blit(sprite.image, self.camera.apply(sprite))
-
+        # pg.draw.rect(self.screen, WHITE, self.player.hit_rect, 2)
         #after drawing, flip display
         pg.display.flip()
 
