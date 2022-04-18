@@ -19,16 +19,20 @@ class Game:
         self.running = True
 
     def load_data(self):
+        #load map
         self.map = Map(path.join(game_Folder, 'map2.txt'))
+        #load images
         self.player_img = pg.image.load(path.join(img_Folder, PLAYER_IMG)).convert()
         self.wall_img = pg.image.load(path.join(img_Folder, WALL_IMG)).convert()
         self.mob_img = pg.image.load(path.join(img_Folder, MOB_IMG)).convert()
+        self.bullet_img = pg.image.load(path.join(img_Folder, BULLET_IMG)).convert()
 
     def new(self):
         self.load_data()
         self.all_sprites = pg.sprite.Group()
         self.walls = pg.sprite.Group()
         self.mobs = pg.sprite.Group()
+        self.bullets = pg.sprite.Group()
         for row, tiles in enumerate(self.map.data):
             for col, tile in enumerate(tiles):
                 if tile == '1':
@@ -53,6 +57,10 @@ class Game:
         #Update loops
         self.all_sprites.update()
         self.camera.update(self.player)
+        #bullet hits mobs
+        hits = pg.sprite.groupcollide(self.mobs, self.bullets, False, True)
+        for hit in hits:
+            hit.kill()
 
     def events(self):
         for event in pg.event.get():
