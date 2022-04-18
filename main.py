@@ -1,3 +1,6 @@
+#Tile Based Shooter
+#Jorden Dickerson 2022
+
 #Artwork by Kenney
 
 from settings import *
@@ -7,6 +10,8 @@ import pygame as pg
 from os import path
 
 #YOU MUST INSTALL PYGAME ON YOUR COMPUTER FOR THIS GAME TO RUN
+
+#TO MAKE MAPS USE TILED MAP EDITOR
 
 
 #HUD functions
