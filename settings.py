@@ -10,6 +10,7 @@ game_Folder = os.path.dirname(__file__)
 assets_Folder = os.path.join(game_Folder, "assets")
 img_Folder = os.path.join(assets_Folder, "imgs")
 audio_Folder = os.path.join(assets_Folder, "audio")
+maps_Folder = os.path.join(assets_Folder, "maps")
 
 print(img_Folder)
 

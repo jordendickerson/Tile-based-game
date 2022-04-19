@@ -44,7 +44,9 @@ class Game:
 
     def load_data(self):
         #load map
-        self.map = Map(path.join(game_Folder, 'map2.txt'))
+        self.map = TiledMap(path.join(maps_Folder, 'map.tmx'))
+        self.map_img = self.map.make_map()
+        self.map_rect = self.map_img.get_rect()
         #load images
         self.player_img = pg.image.load(path.join(img_Folder, PLAYER_IMG)).convert()
         self.wall_img = pg.image.load(path.join(img_Folder, WALL_IMG)).convert()
@@ -57,16 +59,26 @@ class Game:
         self.walls = pg.sprite.Group()
         self.mobs = pg.sprite.Group()
         self.bullets = pg.sprite.Group()
-        for row, tiles in enumerate(self.map.data):
-            for col, tile in enumerate(tiles):
-                if tile == '1':
-                    Wall(self, col, row)
-                if tile == 'M':
-                    Mob(self, col, row)
-                if tile == "P":
-                    self.player = Player(self, col, row)
 
+        ###For making maps out of text files###
+        # for row, tiles in enumerate(self.map.data):
+        #     for col, tile in enumerate(tiles):
+        #         if tile == '1':
+        #             Wall(self, col, row)
+        #         if tile == 'M':
+        #             Mob(self, col, row)
+        #         if tile == "P":
+        #             self.player = Player(self, col, row)
+
+        for tile_object in self.map.tmxdata.objects:
+            if tile_object.name == 'player':
+                self.player = Player(self, tile_object.x, tile_object.y)
+            if tile_object.name == 'zombie':
+                Mob(self, tile_object.x, tile_object.y)
+            if tile_object.name == 'wall':
+                Obstacle(self, tile_object.x, tile_object.y, tile_object.width, tile_object.height)
         self.camera = Camera(self.map.width, self.map.height)
+        self.draw_debug = False
         self.run()
 
     def run(self):
@@ -103,7 +115,8 @@ class Game:
                     self.playing = False
                 self.running = False
             if event.type == pg.KEYDOWN:
-                pass
+                if event.key == pg.K_h:
+                    self.draw_debug = not self.draw_debug
     def draw_grid(self):
         for x in range(0,WIDTH,TILESIZE):
             pg.draw.line(self.screen, LIGHTGRAY, (x, 0), (x, HEIGHT))
@@ -113,12 +126,20 @@ class Game:
     def draw(self):
         pg.display.set_caption("{:.2f}".format(self.clock.get_fps()))
         #Draw sprites
-        self.screen.fill(GRAY)
+
+        #draw map
+        self.screen.blit(self.map_img, self.camera.apply_rect(self.map_rect))
         # self.draw_grid()
         for sprite in self.all_sprites:
             if isinstance(sprite, Mob):
                 sprite.draw_health()
             self.screen.blit(sprite.image, self.camera.apply(sprite))
+            if self.draw_debug:
+                pg.draw.rect(self.screen, skyBlue, self.camera.apply_rect(sprite.hit_rect), 1)
+        if self.draw_debug:
+            for wall in self.walls:
+                pg.draw.rect(self.screen, skyBlue, self.camera.apply_rect(wall.rect), 1)
+
         # pg.draw.rect(self.screen, WHITE, self.player.hit_rect, 2)
         #HUD
         draw_player_health(self.screen, 10, 10, self.player.health / PLAYER_HEALTH)
