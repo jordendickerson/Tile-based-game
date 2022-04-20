@@ -51,11 +51,12 @@ PLAYER_HIT_RECT = pg.Rect(0,0,35,35)
 BARREL_OFFSET = vec(30, 10)
 
 # Mob Properties
-MOB_SPEED = 150
+MOB_SPEEDS = [150, 100, 75, 125]
 MOB_HIT_RECT = pg.Rect(0,0,30,30)
 MOB_HEALTH = 100
 MOB_DAMAGE = 10
 MOB_KNOCKBACK = 20
+AVOID_RADIUS = 50
 
 # Gun properties
 BULLET_IMG = 'bullet.png'

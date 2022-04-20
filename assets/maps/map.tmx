@@ -251,7 +251,7 @@
   <object id="42" name="wall" x="2886" y="1092" width="54" height="54"/>
   <object id="43" name="wall" x="2884" y="1413" width="54" height="54"/>
   <object id="11" name="player" x="1088" y="768" width="32" height="32"/>
-  <object id="103" name="zombie" x="1259" y="461" width="32" height="32"/>
+  <object id="103" name="zombie" x="2420" y="922" width="32" height="32"/>
   <object id="55" name="wall" x="2518" y="1559" width="20" height="18"/>
   <object id="57" name="wall" x="2522" y="1430" width="20" height="18"/>
   <object id="58" name="wall" x="2331" y="1429" width="20" height="18"/>
@@ -294,11 +294,11 @@
   <object id="102" x="529" y="1229">
    <polygon points="0,0 1,26 14,31 29,27 29,1 33,-1 38,1 37,25 29,36 12,40 -5,30 -9,21 -9,-1"/>
   </object>
-  <object id="108" name="zombie" x="224" y="52" width="32" height="32"/>
-  <object id="109" name="zombie" x="48" y="368" width="32" height="32"/>
-  <object id="110" name="zombie" x="76" y="992" width="32" height="32"/>
-  <object id="111" name="zombie" x="104" y="1568" width="32" height="32"/>
-  <object id="112" name="zombie" x="692" y="1720" width="32" height="32"/>
+  <object id="108" name="zombie" x="2663" y="1055" width="32" height="32"/>
+  <object id="109" name="zombie" x="2581" y="810" width="32" height="32"/>
+  <object id="110" name="zombie" x="2534" y="919" width="32" height="32"/>
+  <object id="111" name="zombie" x="2480" y="1259" width="32" height="32"/>
+  <object id="112" name="zombie" x="2659" y="1320" width="32" height="32"/>
   <object id="113" name="zombie" x="2000" y="1716" width="32" height="32"/>
   <object id="114" name="zombie" x="2760" y="1684" width="32" height="32"/>
   <object id="115" name="zombie" x="2764" y="892" width="32" height="32"/>
