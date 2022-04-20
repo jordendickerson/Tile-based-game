@@ -52,10 +52,13 @@ class Game:
         self.wall_img = pg.image.load(path.join(img_Folder, WALL_IMG)).convert()
         self.mob_img = pg.image.load(path.join(img_Folder, MOB_IMG)).convert()
         self.bullet_img = pg.image.load(path.join(img_Folder, BULLET_IMG)).convert()
+        self.gun_flashes = []
+        for img in MUZZLE_FLASHES:
+            self.gun_flashes.append(pg.image.load(path.join(img_Folder, img)).convert_alpha())
 
     def new(self):
         self.load_data()
-        self.all_sprites = pg.sprite.Group()
+        self.all_sprites = pg.sprite.LayeredUpdates()
         self.walls = pg.sprite.Group()
         self.mobs = pg.sprite.Group()
         self.bullets = pg.sprite.Group()
@@ -71,6 +74,7 @@ class Game:
         #             self.player = Player(self, col, row)
 
         for tile_object in self.map.tmxdata.objects:
+
             if tile_object.name == 'player':
                 self.player = Player(self, tile_object.x, tile_object.y)
             if tile_object.name == 'zombie':
