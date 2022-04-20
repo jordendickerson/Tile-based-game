@@ -43,6 +43,30 @@ class Game:
         pg.key.set_repeat(500, 100)
         self.running = True
 
+    def draw_text(self, text, font_name, size, color, x, y, align="nw"):
+        font = pg.font.Font(font_name, size)
+        text_surface = font.render(text, True, color)
+        text_rect = text_surface.get_rect()
+        if align == "nw":
+            text_rect.topleft = (x, y)
+        if align == "ne":
+            text_rect.topright = (x, y)
+        if align == "sw":
+            text_rect.bottomleft = (x, y)
+        if align == "se":
+            text_rect.bottomright = (x, y)
+        if align == "n":
+            text_rect.midtop = (x, y)
+        if align == "s":
+            text_rect.midbottom = (x, y)
+        if align == "e":
+            text_rect.midright = (x, y)
+        if align == "w":
+            text_rect.midleft = (x, y)
+        if align == "center":
+            text_rect.center = (x, y)
+        self.screen.blit(text_surface, text_rect)
+
     def load_data(self):
         #load map
         self.map = TiledMap(path.join(maps_Folder, 'map.tmx'))
@@ -51,6 +75,8 @@ class Game:
         #load images
         self.player_img = pg.image.load(path.join(img_Folder, PLAYER_IMG)).convert_alpha()
         self.wall_img = pg.image.load(path.join(img_Folder, WALL_IMG)).convert()
+        self.splat = pg.image.load(path.join(img_Folder, SPLAT)).convert_alpha()
+        self.splat = pg.transform.scale(self.splat, (64, 64))
         self.mob_img = pg.image.load(path.join(img_Folder, MOB_IMG)).convert_alpha()
         self.bullet_img = pg.image.load(path.join(img_Folder, BULLET_IMG)).convert()
         self.gun_flashes = []
@@ -59,6 +85,10 @@ class Game:
         self.item_images = {}
         for item in ITEM_IMAGES:
             self.item_images[item] = pg.image.load(path.join(img_Folder, ITEM_IMAGES[item])).convert_alpha()
+        #Load font
+        self.title_font = path.join(img_Folder, 'ZOMBIE.TTF')
+        self.dim_screen = pg.Surface(self.screen.get_size()).convert_alpha()
+        self.dim_screen.fill((0,0,0,180))
         # Sound Loading
         pg.mixer.music.load(path.join(audio_Folder, BG_MUSIC))
         #effects sounds
@@ -70,7 +100,7 @@ class Game:
         self.weapon_sounds['gun'] = []
         for snd in WEAPON_SOUNDS_GUN:
             s = pg.mixer.Sound(path.join(audio_Folder, snd))
-            s.set_volume(0.5)
+            s.set_volume(0.3)
             self.weapon_sounds['gun'].append(s)
         #zombie sounds
         self.zombie_moan_sounds = []
@@ -123,6 +153,7 @@ class Game:
                 Item(self, obj_center, tile_object.name)
         self.camera = Camera(self.map.width, self.map.height)
         self.draw_debug = False
+        self.paused = False
         self.effects_sounds['level_start'].play()
         self.run()
 
@@ -132,7 +163,8 @@ class Game:
         while self.playing:
             self.dt = self.clock.tick(FPS) / 1000
             self.events()
-            self.update()
+            if not self.paused:
+                self.update()
             self.draw()
 
     def update(self):
@@ -172,6 +204,8 @@ class Game:
             if event.type == pg.KEYDOWN:
                 if event.key == pg.K_h:
                     self.draw_debug = not self.draw_debug
+                if event.key == pg.K_ESCAPE:
+                    self.paused = not self.paused
     def draw_grid(self):
         for x in range(0,WIDTH,TILESIZE):
             pg.draw.line(self.screen, LIGHTGRAY, (x, 0), (x, HEIGHT))
@@ -198,6 +232,10 @@ class Game:
         # pg.draw.rect(self.screen, WHITE, self.player.hit_rect, 2)
         #HUD
         draw_player_health(self.screen, 10, 10, self.player.health / PLAYER_HEALTH)
+        if self.paused:
+            self.screen.blit(self.dim_screen, (0,0))
+            self.draw_text('Paused', self.title_font, 105, RED, WIDTH / 2, HEIGHT / 2, align='center')
+
         #after drawing, flip display
         pg.display.flip()
 
