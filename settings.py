@@ -10,6 +10,7 @@ game_Folder = os.path.dirname(__file__)
 assets_Folder = os.path.join(game_Folder, "assets")
 img_Folder = os.path.join(assets_Folder, "imgs")
 audio_Folder = os.path.join(assets_Folder, "audio")
+pain_Folder = os.path.join(audio_Folder, "pain")
 maps_Folder = os.path.join(assets_Folder, "maps")
 
 print(img_Folder)
@@ -31,7 +32,18 @@ ITEMS_LAYER = 1
 # Items
 ITEM_IMAGES = {'health': 'health_pack.png'}
 HEALTH_PACK_AMOUNT = 20
+BOB_RANGE = 15
+BOB_SPEED = 0.4
 
+# Sounds
+BG_MUSIC = 'espionage.ogg'
+PLAYER_HIT_SOUNDS = ['pain/8.wav', 'pain/9.wav', 'pain/10.wav', 'pain/11.wav']
+ZOMBIE_MOAN_SOUNDS = ['brains2.wav', 'brains3.wav', 'zombie-roar-1.wav', 'zombie-roar-2.wav',
+                      'zombie-roar-3.wav', 'zombie-roar-5.wav', 'zombie-roar-6.wav', 'zombie-roar-7.wav']
+ZOMBIE_HIT_SOUNDS = ['splat-15.wav']
+WEAPON_SOUNDS_GUN = ['sfx_weapon_singleshot2.wav']
+EFFECTS_SOUNDS = {'level_start': 'level_start.wav',
+                  'health_up': 'health_pack.wav'}
 
 # game title
 TITLE = "Runner" #Sets title
@@ -69,6 +81,7 @@ MOB_HEALTH = 100
 MOB_DAMAGE = 10
 MOB_KNOCKBACK = 20
 AVOID_RADIUS = 50
+DETECT_RADIUS = 400
 
 # Gun properties
 BULLET_IMG = 'bullet.png'

@@ -3,6 +3,7 @@ from random import uniform
 from settings import *
 from tilemap import collide_hit_rect
 import random
+import pytweening as tween
 vec = pg.math.Vector2
 
 
@@ -34,7 +35,6 @@ class Player(pg.sprite.Sprite):
         pg.sprite.Sprite.__init__(self, self.groups)
         self.game = game
         self.image = game.player_img
-        self.image.set_colorkey(BLACK)
         self.rect = self.image.get_rect()
         self.rect.center = (x,y)
         self.hit_rect = PLAYER_HIT_RECT
@@ -66,6 +66,7 @@ class Player(pg.sprite.Sprite):
                 pos = self.pos + BARREL_OFFSET.rotate(-self.rot)
                 Bullet(self.game, pos, dir)
                 self.vel = vec(-KICKBACK, 0).rotate(-self.rot)
+                random.choice(self.game.weapon_sounds['gun']).play()
                 MuzzleFlash(self.game, pos)
 
     def add_health(self, amount):
@@ -92,8 +93,7 @@ class Mob(pg.sprite.Sprite):
         self.groups = game.all_sprites, game.mobs
         pg.sprite.Sprite.__init__(self, self.groups)
         self.game = game
-        self.image = game.mob_img
-        self.image.set_colorkey(BLACK)
+        self.image = game.mob_img.copy()
         self.rect = self.image.get_rect()
         self.rect.center = (x,y)
         self.hit_rect = MOB_HIT_RECT.copy()
@@ -105,6 +105,7 @@ class Mob(pg.sprite.Sprite):
         self.rot = 0
         self.health = MOB_HEALTH
         self.speed = random.choice(MOB_SPEEDS)
+        self.target = game.player
 
     def avoid_mobs(self):
         for mob in self.game.mobs:
@@ -114,26 +115,31 @@ class Mob(pg.sprite.Sprite):
                     self.acc += dist.normalize()
 
     def update(self):
-        self.rot = (self.game.player.pos - self.pos).angle_to(vec(1,0))
-        self.image = pg.transform.rotate(self.game.mob_img, self.rot)
-        # self.rect = self.image.get_rect()
-        self.rect.center = self.pos
-        self.acc = vec(1, 0).rotate(-self.rot)
-        self.avoid_mobs()
-        self.acc.scale_to_length(self.speed)
-        self.acc += self.vel * -1
-        self.vel += self.acc * self.game.dt
-        self.pos += self.vel * self.game.dt + 0.5 * self.acc * self.game.dt ** 2
-        self.rect.center = self.pos
-        #check for hitbox colliding with walls
-        self.hit_rect.centerx = self.pos.x
-        collide_with_walls(self, self.game.walls, 'x')
-        self.hit_rect.centery = self.pos.y
-        collide_with_walls(self, self.game.walls, 'y')
-        #player rect center = hitbox rect center
-        self.rect.center = self.hit_rect.center
+        target_dist = self.target.pos - self.pos
+        if target_dist.length_squared() < DETECT_RADIUS**2:
+            if random.random() < 0.002:
+                random.choice(self.game.zombie_moan_sounds).play()
+            self.rot = target_dist.angle_to(vec(1,0))
+            self.image = pg.transform.rotate(self.game.mob_img, self.rot)
+            # self.rect = self.image.get_rect()
+            self.rect.center = self.pos
+            self.acc = vec(1, 0).rotate(-self.rot)
+            self.avoid_mobs()
+            self.acc.scale_to_length(self.speed)
+            self.acc += self.vel * -1
+            self.vel += self.acc * self.game.dt
+            self.pos += self.vel * self.game.dt + 0.5 * self.acc * self.game.dt ** 2
+            self.rect.center = self.pos
+            #check for hitbox colliding with walls
+            self.hit_rect.centerx = self.pos.x
+            collide_with_walls(self, self.game.walls, 'x')
+            self.hit_rect.centery = self.pos.y
+            collide_with_walls(self, self.game.walls, 'y')
+            #player rect center = hitbox rect center
+            self.rect.center = self.hit_rect.center
         #kill if health reaches 0
         if self.health <= 0:
+            random.choice(self.game.zombie_hit_sounds).play()
             self.kill()
 
     def draw_health(self):
@@ -226,3 +232,15 @@ class Item(pg.sprite.Sprite):
         self.type = type
         self.rect.center = pos
         self.pos = pos
+        self.tween = tween.easeInOutSine
+        self.step = 0
+        self.dir = 1
+
+    def update(self):
+        #bobbing motion
+        offset = BOB_RANGE * (self.tween(self.step / BOB_RANGE) - 0.5)
+        self.rect.centery = self.pos.y + offset * self.dir
+        self.step += BOB_SPEED
+        if self.step > BOB_RANGE:
+            self.step = 0
+            self.dir *= -1
