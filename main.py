@@ -35,6 +35,7 @@ def draw_player_health(surf, x, y, pct):
 
 class Game:
     def __init__(self):
+        pg.mixer.pre_init(44100, -16, 1, 2048)
         pg.init()
         pg.mixer.init()
         self.screen = pg.display.set_mode((WIDTH, HEIGHT))
@@ -78,7 +79,9 @@ class Game:
         self.splat = pg.image.load(path.join(img_Folder, SPLAT)).convert_alpha()
         self.splat = pg.transform.scale(self.splat, (64, 64))
         self.mob_img = pg.image.load(path.join(img_Folder, MOB_IMG)).convert_alpha()
-        self.bullet_img = pg.image.load(path.join(img_Folder, BULLET_IMG)).convert()
+        self.bullet_images = {}
+        self.bullet_images['lg'] = pg.image.load(path.join(img_Folder, BULLET_IMG)).convert()
+        self.bullet_images['sm'] = pg.transform.scale(self.bullet_images['lg'], (10,10))
         self.gun_flashes = []
         for img in MUZZLE_FLASHES:
             self.gun_flashes.append(pg.image.load(path.join(img_Folder, img)).convert_alpha())
@@ -97,11 +100,12 @@ class Game:
             self.effects_sounds[type] = pg.mixer.Sound(path.join(audio_Folder, EFFECTS_SOUNDS[type]))
         #weapons souds
         self.weapon_sounds = {}
-        self.weapon_sounds['gun'] = []
-        for snd in WEAPON_SOUNDS_GUN:
-            s = pg.mixer.Sound(path.join(audio_Folder, snd))
-            s.set_volume(0.3)
-            self.weapon_sounds['gun'].append(s)
+        for weapon in WEAPON_SOUNDS:
+            self.weapon_sounds[weapon] = []
+            for snd in WEAPON_SOUNDS[weapon]:
+                s = pg.mixer.Sound(path.join(audio_Folder, snd))
+                s.set_volume(0.3)
+                self.weapon_sounds[weapon].append(s)
         #zombie sounds
         self.zombie_moan_sounds = []
         for snd in ZOMBIE_MOAN_SOUNDS:
@@ -192,7 +196,7 @@ class Game:
         #bullet hits mobs
         hits = pg.sprite.groupcollide(self.mobs, self.bullets, False, True)
         for hit in hits:
-            hit.health -= BULLET_DAMAGE
+            hit.health -= WEAPONS[self.player.weapon]['damage'] * len(hits[hit])
             hit.vel = vec(0,0)
 
     def events(self):
