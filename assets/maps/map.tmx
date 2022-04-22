@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.5" tiledversion="1.7.2" orientation="orthogonal" renderorder="right-down" width="50" height="30" tilewidth="64" tileheight="64" infinite="0" nextlayerid="8" nextobjectid="131">
+<map version="1.5" tiledversion="1.7.2" orientation="orthogonal" renderorder="right-down" width="50" height="30" tilewidth="64" tileheight="64" infinite="0" nextlayerid="8" nextobjectid="151">
  <tileset firstgid="1" source="Kenney Topdown Pack.tsx"/>
  <layer id="1" name="Ground" width="50" height="30">
   <data encoding="csv">
@@ -311,5 +311,25 @@
   <object id="128" name="wall" x="3182" y="8" width="36.68" height="1875"/>
   <object id="129" name="health" x="1068" y="964" width="32" height="32"/>
   <object id="130" name="shotgun" x="471" y="1236" width="32" height="32"/>
+  <object id="131" name="zombie" x="120" y="1499" width="32" height="32"/>
+  <object id="132" name="zombie" x="93" y="1145" width="32" height="32"/>
+  <object id="133" name="zombie" x="208" y="923" width="32" height="32"/>
+  <object id="134" name="zombie" x="929" y="1442" width="32" height="32"/>
+  <object id="135" name="zombie" x="814" y="1675" width="32" height="32"/>
+  <object id="136" name="zombie" x="111" y="1739" width="32" height="32"/>
+  <object id="137" name="zombie" x="911" y="1229" width="32" height="32"/>
+  <object id="138" name="health" x="329" y="196" width="32" height="32"/>
+  <object id="139" name="health" x="1272" y="69" width="32" height="32"/>
+  <object id="140" name="health" x="1936" y="1426" width="32" height="32"/>
+  <object id="141" name="health" x="1457" y="1560" width="32" height="32"/>
+  <object id="142" name="health" x="1554" y="854" width="32" height="32"/>
+  <object id="143" name="zombie" x="114" y="42" width="32" height="32"/>
+  <object id="144" name="zombie" x="90" y="196" width="32" height="32"/>
+  <object id="145" name="zombie" x="84" y="387" width="32" height="32"/>
+  <object id="146" name="zombie" x="320" y="432" width="32" height="32"/>
+  <object id="147" name="zombie" x="357" y="642" width="32" height="32"/>
+  <object id="148" name="zombie" x="660" y="290" width="32" height="32"/>
+  <object id="149" name="zombie" x="796" y="96" width="32" height="32"/>
+  <object id="150" name="zombie" x="978" y="169" width="32" height="32"/>
  </objectgroup>
 </map>
