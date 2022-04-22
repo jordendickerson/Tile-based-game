@@ -204,15 +204,15 @@ class Game:
             self.player.pos += vec(MOB_KNOCKBACK, 0).rotate(-hits[0].rot)
         #bullet hits mobs
         hits = pg.sprite.groupcollide(self.mobs, self.bullets, False, True)
-        for hit in hits:
-            hit.health -= WEAPONS[self.player.weapon]['damage'] * len(hits[hit])
-            hit.vel = vec(0,0)
+        for mob in hits:
+            for bullet in hits[mob]:
+                mob.health -= bullet.damage
+            mob.vel = vec(0,0)
 
     def events(self):
         for event in pg.event.get():
             if event.type == pg.QUIT:
-                if self.playing:
-                    self.playing = False
+                self.playing = False
                 self.running = False
             if event.type == pg.KEYDOWN:
                 if event.key == pg.K_h:
@@ -258,9 +258,25 @@ class Game:
 
     def show_go_screen(self):
         self.screen.fill(BLACK)
-        self.draw_text("GAME_OVER", self.title_font, 100, RED,
+        self.draw_text("GAME OVER", self.title_font, 100, RED,
                        WIDTH / 2, HEIGHT / 2, align="center")
-        self.draw_text("Press a key to start over", self.title_font, 75, WHITE, WIDTH / 2, HEIGHT * 3/4, align="center")
+        self.draw_text("Press a key to start over", self.title_font, 75, WHITE,
+                       WIDTH / 2, HEIGHT * 3/4, align="center")
+        pg.display.flip()
+        self.wait_for_key()
+
+    def wait_for_key(self):
+        pg.event.wait()
+        waiting = True
+        while waiting:
+            self.clock.tick(FPS)
+            for event in pg.event.get():
+                if event.type == pg.QUIT:
+                    waiting = False
+                    self.running = False
+                if event.type == pg.KEYUP:
+                    waiting = False
+
 
 g = Game()
 g.show_start_screen()
