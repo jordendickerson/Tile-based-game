@@ -4,6 +4,7 @@ from settings import *
 from tilemap import collide_hit_rect
 import random
 import pytweening as tween
+import itertools
 vec = pg.math.Vector2
 
 
@@ -45,6 +46,7 @@ class Player(pg.sprite.Sprite):
         self.last_shot = 0
         self.health = PLAYER_HEALTH
         self.weapon = 'pistol'
+        self.damaged = False
 
     def get_keys(self):
         self.rot_speed = 0
@@ -62,6 +64,9 @@ class Player(pg.sprite.Sprite):
         if keys[pg.K_SPACE]:
             self.shoot()
 
+    def hit(self):
+        self.damaged = True
+        self.damage_alpha = itertools.chain(DAMAGE_ALPHA * 4)
 
     def shoot(self):
         now = pg.time.get_ticks()
@@ -87,6 +92,11 @@ class Player(pg.sprite.Sprite):
         self.get_keys()
         self.rot = (self.rot + self.rot_speed * self.game.dt) % 360
         self.image = pg.transform.rotate(self.game.player_img, self.rot)
+        if self.damaged:
+            try:
+                self.image.fill((255, 255, 255, next(self.damage_alpha)), special_flags=pg.BLEND_RGBA_MULT)
+            except:
+                self.damaged = False
         self.rect = self.image.get_rect()
         self.rect.center = self.pos
         self.pos += self.vel * self.game.dt
@@ -177,7 +187,7 @@ class Bullet(pg.sprite.Sprite):
         self.hit_rect = self.rect
         self.pos = vec(pos)
         self.rect.center = pos
-        self.vel = dir * WEAPONS[game.player.weapon]['bullet_speed']
+        self.vel = dir * WEAPONS[game.player.weapon]['bullet_speed'] * uniform(0.9, 1.1)
         self.spawn_time = pg.time.get_ticks()
 
     def update(self):
